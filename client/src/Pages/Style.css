@@ -1,0 +1,93 @@
+/*--------------- Login Form ------------------ */
+
+.LoginForm{
+    width: 50%;
+    margin:auto;
+    margin-top: 100px;
+}
+
+/*--------------- Signup Form-------------------*/
+
+.SignupForm{
+    width: 50%;
+    margin:auto;
+    margin-top: 100px;
+}
+
+/*---------------- Page not found--------------- */
+
+.Head404{
+    margin-top: 150px;
+}
+
+.Content404{
+    
+    align-items: flex-start;
+    margin:auto;
+    width:fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* -----------Home----------------- */
+
+.HomeCol1{
+    width: 25%;
+    overflow: scroll;
+}
+
+.HomeCol2{
+    overflow: scroll;
+    width:100%;
+}
+
+.HomeParent{
+    display:flex;
+    flex-direction: row;
+    overflow: hidden;
+    height: 100%;
+    width: fit-content;
+    margin: auto;
+}
+
+.HomeCol1::-webkit-scrollbar {
+    display: initial !important ;
+  }
+
+.HomeCol1::-webkit-scrollbar {
+    width: 10px !important;
+    height: 100px !important;
+    border: transparent !important;
+    
+  } 
+  
+.HomeCol1::-webkit-scrollbar-track {
+     
+    border: transparent !important;
+    border-radius: 30% !important;
+  } 
+   
+.HomeCol1::-webkit-scrollbar-thumb {
+    background: transparent !important; 
+    border-radius: 10px !important;
+   
+  } 
+  
+.HomeCol1::-webkit-scrollbar-thumb:hover   {
+    background: lightgray !important; 
+  } 
+
+
+
+
+
+
+
+
+@media (max-width: 1200px){
+    .HomeCol1{
+        display: none ;
+    }
+}
+

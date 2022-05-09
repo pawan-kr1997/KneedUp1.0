@@ -1,0 +1,34 @@
+.FeedsContainer{
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 50px;
+    
+}
+
+
+
+
+.IconContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 15px;
+    
+}
+
+.Icon{
+    color: grey;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    padding: 6px;
+    width: fit-content;
+    height: fit-content;
+}
+
+
+.Icon:hover{
+    border: 1px solid grey;
+    box-shadow: 1px 1px 1px grey;
+}
+

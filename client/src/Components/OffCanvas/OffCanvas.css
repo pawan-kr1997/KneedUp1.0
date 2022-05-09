@@ -1,0 +1,7 @@
+.OffcanvasList{
+    border:none;
+    display: flex !important;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}

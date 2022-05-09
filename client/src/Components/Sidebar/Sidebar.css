@@ -1,0 +1,16 @@
+.SidebarParent{
+    width: 95%;
+    margin: auto;
+    margin-top: 35px;
+}
+
+.SidebarButton{
+    width: 100%;
+    display: flex !important;
+    flex-direction: row;
+    gap: 9px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;;
+   
+}

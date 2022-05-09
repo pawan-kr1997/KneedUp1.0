@@ -1,0 +1,10 @@
+.ShowNav{
+    position:fixed;
+
+}
+
+@media (max-width: 1200px){
+    .ShowNav{
+        display: none !important;
+    }
+}
