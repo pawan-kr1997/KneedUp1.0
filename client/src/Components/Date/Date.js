@@ -1,10 +1,10 @@
 import './Date.css';
 
-const Date = () => {
+const Date = (props) => {
     return (
         <div className='DateParent'>
             <div className='DateLine'></div>
-            <div className='DateBody'>Yesterday</div>
+            <div className='DateBody'>{props.children}</div>
             <div className='DateLine'></div>
         </div>
     )
