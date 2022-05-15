@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     switch (category) {
         case 'national':
             url = "https://newsonair.gov.in/National-News.aspx";
-            req.category='national';
+            req.category="national";
             break;
         case 'international':
             url = "https://newsonair.gov.in/International-News.aspx";
@@ -51,9 +51,13 @@ module.exports = (req, res, next) => {
 
             })
 
+                    
+    
             Source.findOne({ name: 'newsOnAir' })
                 .then(sourceData => {
-                    sourceData.currentState = articles;
+                    console.log("---------"+sourceData.data["national"]);
+                    
+                    sourceData.data[req.category].currentState = articles;
                     return sourceData.save();
                 })
                 .then(result => {

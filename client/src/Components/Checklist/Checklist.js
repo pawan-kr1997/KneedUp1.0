@@ -7,10 +7,12 @@ const Checklist = (props) => {
 
     const [categoryDetail, setCategoryDetail] = useState({});
     const [serverCategory, setServerCategory]= useState({});
-    const [name, setName] = useState('');
-    const [place, setPlace] = useState('');
-    const [animal, setAnimal] = useState('');
-    const [thing, setThing] = useState('');
+    const [news, setNews] = useState('');
+    const [president, setPresident] = useState('');
+    const [niti, setNiti] = useState('');
+    const [idsa, setIdsa] = useState('');
+    const [pib, setPib] = useState('');
+    const [prs, setPrs] = useState('');
 
 
 
@@ -23,17 +25,21 @@ const Checklist = (props) => {
                         return;
                     }
                     setCategoryDetail(response.data.category);
-                    setName(response.data.category.Name);
-                    setPlace(response.data.category.Place);
-                    setAnimal(response.data.category.Animal);
-                    setThing(response.data.category.Thing);
+                    setNews(response.data.category.news);
+                    setPresident(response.data.category.president);
+                    setNiti(response.data.category.niti);
+                    setIdsa(response.data.category.idsa);
+                    setPib(response.data.category.pib);
+                    setPrs(response.data.category.prs);
                 }
 
                 if(!props.show){
-                    setName(response.data.category.Name);
-                    setPlace(response.data.category.Place);
-                    setAnimal(response.data.category.Animal);
-                    setThing(response.data.category.Thing);
+                    setNews(response.data.category.news);
+                    setPresident(response.data.category.president);
+                    setNiti(response.data.category.niti);
+                    setIdsa(response.data.category.idsa);
+                    setPib(response.data.category.pib);
+                    setPrs(response.data.category.prs);
                 }
 
 
@@ -44,14 +50,16 @@ const Checklist = (props) => {
     })
 
 
-    const onSubmitHandler = () => {
-        console.log("Name: " + name + " Place: " + place + " Animal: " + animal + " Thing: " + thing);
+    const onSubmitHandler = () => { 
+        //console.log("Name: " + name + " Place: " + place + " Animal: " + animal + " Thing: " + thing);
     
         let category={
-            Name: name, 
-            Place: place, 
-            Animal: animal, 
-            Thing: thing
+            News: news, 
+            President: president, 
+            Niti: niti, 
+            Idsa: idsa,
+            Pib: pib,
+            Prs: prs
         }
 
         
@@ -74,25 +82,36 @@ const Checklist = (props) => {
             <Form className='Lists'>
 
                 <div className='ListParent'>
-                    <div>Name</div>
-                    <Form.Check aria-label="option 1" checked={name} onChange={e => setName(!name)} />
+                    <div>News on air</div>
+                    <Form.Check aria-label="option 1" checked={news} onChange={e => setNews(!news)} />
 
                 </div>
 
                 <div className='ListParent'>
-                    <div>Place</div>
-                    <Form.Check aria-label="option 1" checked={place} onChange={e => setPlace(!place)} />
+                    <div>President of India</div>
+                    <Form.Check aria-label="option 1" checked={president} onChange={e => setPresident(!president)} />
                 </div>
 
                 <div className='ListParent'>
-                    <div>Animal</div>
-                    <Form.Check aria-label="option 1" checked={animal} onChange={e => setAnimal(!animal)} />
+                    <div>Niti Aayog</div>
+                    <Form.Check aria-label="option 1" checked={niti} onChange={e => setNiti(!niti)} />
 
                 </div>
 
                 <div className='ListParent'>
-                    <div>Thing</div>
-                    <Form.Check aria-label="option 1" checked={thing} onChange={e => setThing(!thing)} />
+                    <div>Institute for Defence studies and Analysis</div>
+                    <Form.Check aria-label="option 1" checked={idsa} onChange={e => setIdsa(!idsa)} />
+
+                </div>
+
+                <div className='ListParent'>
+                    <div>Press Information Bureau</div>
+                    <Form.Check aria-label="option 1" checked={pib} onChange={e => setPib(!pib)} />
+
+                </div>
+                <div className='ListParent'>
+                    <div>PRS India</div>
+                    <Form.Check aria-label="option 1" checked={prs} onChange={e => setPrs(!prs)} />
 
                 </div>
 

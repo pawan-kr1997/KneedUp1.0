@@ -33,13 +33,13 @@
 /* -----------Home----------------- */
 
 .HomeCol1{
-    width: 25%;
+    max-width: 250px;
     overflow: scroll;
 }
 
 .HomeCol2{
     overflow: scroll;
-    width:100%;
+    max-width:1000px;
 }
 
 .HomeParent{
@@ -64,7 +64,7 @@
   
 .HomeCol1::-webkit-scrollbar-track {
      
-    border: transparent !important;
+    border: lightgray !important;
     border-radius: 30% !important;
   } 
    
@@ -74,10 +74,32 @@
    
   } 
   
-.HomeCol1::-webkit-scrollbar-thumb:hover   {
+.HomeCol2::-webkit-scrollbar-thumb:hover   {
     background: lightgray !important; 
   } 
 
+.HomeCol2::-webkit-scrollbar {
+    display: initial !important ;
+  }
+
+.HomeCol2::-webkit-scrollbar {
+    width: 10px !important;
+    height: 100px !important;
+    border: transparent !important;
+    
+  } 
+  
+.HomeCol2::-webkit-scrollbar-track {
+     
+    border: transparent !important;
+    border-radius: 30% !important;
+  } 
+   
+.HomeCol2::-webkit-scrollbar-thumb {
+    background: lightgray !important; 
+    border-radius: 10px !important;
+   
+  } 
 
 
 

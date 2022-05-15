@@ -13,8 +13,8 @@ module.exports = (req, res, next) => {
 
     Source.findOne({ name: "prsIndia" })
         .then(sourceData => {
-            currentArticles = [...sourceData.currentState];
-            oldArticles = [...sourceData.oldState];
+            currentArticles = [...sourceData.data[req.category].currentState];
+            oldArticles = [...sourceData.data[req.category].oldState];
 
 
             if (oldArticles.length === 0) {
@@ -23,13 +23,13 @@ module.exports = (req, res, next) => {
                 toBeAddedArticles = [...currentArticles];
                 toBeAddedArticles = toBeAddedArticles.reverse();
 
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
                 return sourceData.save();
             }
             else if (currentArticles[0].title === oldArticles[0].title) {
                 console.log("yes 2");
                 oldArticles = [...currentArticles];
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
                 return sourceData.save();
             }
             else {
@@ -51,7 +51,7 @@ module.exports = (req, res, next) => {
 
                 toBeAddedArticles = toBeAddedArticles.reverse();
                 oldArticles = [...currentArticles];
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
 
                 return sourceData.save();
             }
@@ -76,7 +76,8 @@ module.exports = (req, res, next) => {
                             title: toBeAddedArticles[i].title,
                             url: toBeAddedArticles[i].url,
                             category: req.category,
-                            source: mongoose.Types.ObjectId('62795427d7fa0f2c41bf8f0d')
+                            bookmarked: false,
+                            source: mongoose.Types.ObjectId('627bcd8b92057cdddf06f1ff')
                         })
                         post.save()
                             .then(result => {

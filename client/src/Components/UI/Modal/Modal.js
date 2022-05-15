@@ -13,7 +13,6 @@ const Modal=(props)=>{
     else{
         visibleState='Visible'
     }
-    console.log('From modal'+ props.category);
 
     return(
         <div className={visibleState}>

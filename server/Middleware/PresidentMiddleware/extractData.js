@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
 
         case 'pressReleases':
             url = "https://presidentofindia.nic.in/press-release.htm";
-            req.category = 'press release';
+            req.category = 'pressReleases';
             break;
 
         default:
@@ -53,7 +53,7 @@ module.exports = (req, res, next) => {
 
             Source.findOne({ name: 'presidentOfIndia' })
                 .then(sourceData => {
-                    sourceData.currentState = articles;
+                    sourceData.data[req.category].currentState = articles;
                     return sourceData.save();
                 })
                 .then(result => {

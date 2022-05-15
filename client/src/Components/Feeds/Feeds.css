@@ -32,3 +32,32 @@
     box-shadow: 1px 1px 1px grey;
 }
 
+
+.DateContainer{
+    border: 1px solid green;
+}
+
+.Text{
+    color: black;
+    text-decoration: none;
+}
+
+.Text:hover{
+    color: black;
+    text-decoration: underline;
+}
+
+
+
+
+.Last{
+    visibility: hidden;
+}
+
+@media (max-width: 1200px){
+    .Last{
+        display: none !important;
+    }
+}
+
+

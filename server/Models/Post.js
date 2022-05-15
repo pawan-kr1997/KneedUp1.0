@@ -13,6 +13,10 @@ const postSchema = new Schema(
         category: {
             type: String
         },
+        bookmarked:{
+            type: Boolean,
+            required: true
+        },
         source: {
             type: Schema.Types.ObjectId,
             ref: 'Source',

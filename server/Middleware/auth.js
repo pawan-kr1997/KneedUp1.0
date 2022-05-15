@@ -11,7 +11,9 @@ module.exports= (req, res, next)=>{
         decodedToken= jwt.verify(token, 'marvelnewssecret');
     }
     catch(err){
-        res.status(200).json({message:'Not logged In', category:{Name:true, Place:true, Animal:true, Thing:true}})
+        res.status(200).json({
+            message:'Not logged In', 
+            category:{news:true, president:true, niti:true, idsa:true, pib:true, prs:true}})
         err.statusCode= 500;
         throw err;
     }

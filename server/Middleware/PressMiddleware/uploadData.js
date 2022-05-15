@@ -76,6 +76,7 @@ module.exports = (req, res, next) => {
                             title: toBeAddedArticles[i].title,
                             url: toBeAddedArticles[i].url,
                             category: req.category,
+                            bookmarked: false,
                             source: mongoose.Types.ObjectId('62794c2b06a9d74e0872f4f6')
                         })
                         post.save()

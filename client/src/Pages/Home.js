@@ -51,16 +51,19 @@ const Home = () => {
                 removeHandler={removeModalHandler}
                 category={categoryDetail} />
 
+
+
             <div className='HomeParent'>
 
                 <div className='HomeCol1'>
                     <Sidebar showHandler={showModalHandler} category={categoryDetail} />
                 </div>
                 <div className='HomeCol2'>
-                    <Outlet/>
+                    <Outlet />
                 </div>
 
             </div>
+
         </div>
     )
 }

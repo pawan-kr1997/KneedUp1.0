@@ -47,11 +47,14 @@ module.exports = (req, res, next) => {
 
             Source.findOne({ name: 'nitiAayog' })
                 .then(sourceData => {
+                    //console.log("--------------"+ temp[0].title);
                     sourceData.currentState = temp;
-                    //console.log("``````"+sourceData.currentState);
+                    //console.log("``````"+sourceData.currentState[0].title);
+                    sourceData.markModified('currentState');
                     return sourceData.save();
                 })
                 .then(result => {
+                    //console.log(result);
                     next();
                 })
                 .catch(err => {

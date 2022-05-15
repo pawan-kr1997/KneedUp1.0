@@ -13,6 +13,8 @@ module.exports = (req, res, next) => {
 
     Source.findOne({ name: "nitiAayog" })
         .then(sourceData => {
+
+            console.log("======== "+sourceData["currentState"]);
             currentArticles = [...sourceData.currentState];
             oldArticles = [...sourceData.oldState];
 
@@ -76,6 +78,7 @@ module.exports = (req, res, next) => {
                             title: toBeAddedArticles[i].title,
                             url: toBeAddedArticles[i].url,
                             category: req.category,
+                            bookmarked: false,
                             source: mongoose.Types.ObjectId('6278ec7ff7f7b4422788e4e8')
                         })
                         post.save()

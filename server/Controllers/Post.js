@@ -6,8 +6,8 @@ const Post= require('../Models/Post');
 // exports.initSource = (req, res, next) => {
 
 //     const source = new Source({
-//         name: 'newsOnAir',
-//         url: 'https://newsonair.gov.in/'
+//         name: 'prsIndia',
+//         url: 'https://prsindia.org/'
 //     })
 
 //     source.save()
@@ -69,23 +69,23 @@ const Post= require('../Models/Post');
 //---------------------------------------------------------------------------------------
 //-----------------  Used to push Source "Niti Aayog" to the database  -----------------
 
-exports.initSource = (req, res, next) => {
+// exports.initSource = (req, res, next) => {
 
-    const source = new Source({
-        name: 'prsIndia',
-        url: 'https://prsindia.org/'
-    })
+//     const source = new Source({
+//         name: 'prsIndia',
+//         url: 'https://prsindia.org/'
+//     })
 
-    source.save()
-        .then(result => {
-            console.log(result);
-            res.status(200).json({ message: 'Hello world' });
-            //next();
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}
+//     source.save()
+//         .then(result => {
+//             console.log(result);
+//             res.status(200).json({ message: 'Hello world' });
+//             //next();
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+// }
 
 //---------------------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ exports.getNitiPost = (req, res, next) => {
 exports.getPresidentPost = (req, res, next) => {
 
 
-    Post.find({category: req.category, source:'6279438bcc98f92155c2faaa'})
+    Post.find({category: req.category, source:'627baa0b66a5f4c3ea42a18c'})
         .then(posts=>{
             res.status(200).json({ message: 'President of india posts sent' , posts: posts});
         })
@@ -183,7 +183,7 @@ exports.getPressPost = (req, res, next) => {
 exports.getPRSPost = (req, res, next) => {
 
 
-    Post.find({category: req.category, source:'62795427d7fa0f2c41bf8f0d'})
+    Post.find({category: req.category, source:'627bcd8b92057cdddf06f1ff'})
         .then(posts=>{
             res.status(200).json({ message: 'PRS India posts sent' , posts: posts});
         })

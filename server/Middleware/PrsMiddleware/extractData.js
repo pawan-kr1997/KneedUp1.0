@@ -12,12 +12,12 @@ module.exports = (req, res, next) => {
     switch (category) {
         case 'blogs':
             url = "https://prsindia.org/theprsblog";
-            req.category = 'prs blogs';
+            req.category = 'blogs';
             break;
 
         case 'articles':
             url = "https://prsindia.org/articles-by-prs-team";
-            req.category = 'prs articles';
+            req.category = 'articles';
             break;
 
         default:
@@ -51,7 +51,7 @@ module.exports = (req, res, next) => {
 
             Source.findOne({ name: 'prsIndia' })
                 .then(sourceData => {
-                    sourceData.currentState = articles;
+                    sourceData.data[req.category].currentState = articles;
                     return sourceData.save();
                 })
                 .then(result => {

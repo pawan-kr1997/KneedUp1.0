@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Toast, ToastContainer } from 'react-bootstrap';
 import { BsBookmarks } from 'react-icons/bs';
+import { BsFillBookmarksFill } from 'react-icons/bs';
 import { MdShare } from 'react-icons/md';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -11,45 +12,58 @@ import './Feeds.css';
 const Feeds = () => {
     let params = useParams();
     let paramsCategory = '';
+    let headerText = " ";
     let navigate = useNavigate();
     const [posts, setPosts] = useState([]);
+    const [bookmarkData, setBookmarkData] = useState([]);
 
     switch (params.category) {
         case 'newsOnAir_National':
             paramsCategory = 'national';
+            headerText = 'News On Air / National news';
             break;
         case 'newsOnAir_International':
             paramsCategory = 'international';
+            headerText = 'News On Air / International news';
             break;
         case 'newsOnAir_Business':
             paramsCategory = 'business';
+            headerText = 'News On Air / Business news';
             break;
         case 'newsOnAir_Sports':
             paramsCategory = 'sports';
+            headerText = 'News On Air / Sports news';
             break;
         case 'poi_Speeches':
             paramsCategory = 'speeches';
+            headerText = 'President of India / Speeches';
             break;
         case 'poi_pressReleases':
             paramsCategory = 'pressReleases';
+            headerText = 'President of India / Press releases';
             break;
         case 'nitiAayog_nitiBlogs':
             paramsCategory = 'nitiBlogs';
+            headerText = 'Niti Aayog / Niti blogs';
             break;
         case 'idsa_commentsAndBriefs':
             paramsCategory = 'commentsAndBriefs';
+            headerText = 'Institute of Defence Studies and Analysis / Comments and Briefs';
             break;
         case 'pib_pressReleases':
             paramsCategory = 'pressReleases';
+            headerText = 'Press Information Bureau / Press releases';
             break;
         case 'prs_Blogs':
             paramsCategory = 'blogs';
+            headerText = 'PRS India / Blogs';
             break;
         case 'prs_Articles':
             paramsCategory = 'articles';
+            headerText = 'PRS India / Articles';
             break;
         default:
-            paramsCategory = '';
+            paramsCategory = 'abc';
     }
 
 
@@ -75,7 +89,7 @@ const Feeds = () => {
     }
     else {
         console.log("Hello ji");
-        navigate('/404');
+
     }
 
 
@@ -100,8 +114,64 @@ const Feeds = () => {
             })
     })
 
+    useEffect(() => {
+        if(localStorage.getItem('token')){
+        axios.get('http://localhost:8080/bookmark/init')
+            .then(response => {
+
+                 if (JSON.stringify(bookmarkData) !== JSON.stringify(response.data.data)) {
+
+                     setBookmarkData(response.data.data);
+                 }
+                //console.log(response.data.data);
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
+    })
+
+
+    const bookmarkHandler = (postId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+        }
+        
+        axios.get("http://localhost:8080/postBookmark/" + postId)
+            .then(result => {
+                console.log(result.data.user.bookmark);
+                setBookmarkData(result.data.user.bookmark);
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const unBookmarkHandler = (postId) => {
+        //console.log("bookmark removed");
+        
+
+
+
+
+
+
+
+        axios.get("http://localhost:8080/postUnmark/" + postId)
+            .then(result => {
+                console.log(result.data.user.bookmark);
+                setBookmarkData(result.data.user.bookmark);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     let reversePosts = [...posts].reverse();
-    console.log(reversePosts);
+    //console.log(reversePosts);
 
     let currentDate = '';
     let currentDateStatus = false;
@@ -113,12 +183,11 @@ const Feeds = () => {
         let postDate = myDate.getDate();
         let postMonth = myDate.getMonth();
         let postYear = myDate.getFullYear();
-        //let dateInParts = tempDate.toISOString().split("T");
+
 
 
         let date = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate());
         let shortMonth = date.toLocaleString('en-us', { month: 'short' });
-        //let dateTimeInParts = myDate.getDate() + " " + shortMonth + " " + myDate.getFullYear();
         let dateTimeInParts = " ";
 
         let tempDate = new Date();
@@ -140,24 +209,42 @@ const Feeds = () => {
             currentDateStatus = true;
             currentDate = postDate + " " + postMonth + " " + postYear;
         }
-        else{
-            currentDateStatus= false;
+        else {
+            currentDateStatus = false;
         }
+
+        let bookmarkStatus = <BsBookmarks className='Icon'
+            onClick={() => bookmarkHandler(post._id)} />;
+
+        for (let i = 0; i < bookmarkData.length; i++) {
+            if (bookmarkData[i].id.toString() === post._id.toString()) {
+                bookmarkStatus = <BsFillBookmarksFill className='Icon'
+                    style={{ color: '#1a73e8' }}
+                    onClick={() => unBookmarkHandler(post._id)} />;
+                break;
+            }
+        }
+
+
 
 
         return (
             <div>
-                {currentDateStatus ? <DateComp>{dateTimeInParts}</DateComp> : null}
+                {currentDateStatus ? <DateComp>
+                    {dateTimeInParts}
+                </DateComp> : null}
                 <Card key={post._id}>
                     <Card.Body>
                         <Card.Title><a href={contentURL}
                             target="_blank"
-                            rel="noopener noreferrer">
+                            rel="noopener noreferrer"
+                            className='Text'>
                             {post.title}
                         </a></Card.Title>
                         <div className='IconContainer'>
-                            <BsBookmarks className='Icon' />
-                            <MdShare className='Icon' />
+                            {bookmarkStatus}                            
+
+                            <MdShare className='Icon' onClick={() => {navigator.clipboard.writeText(contentURL)}} />
                         </div>
                     </Card.Body>
                 </Card>
@@ -172,12 +259,37 @@ const Feeds = () => {
     return (
         <div className='FeedsContainer'>
 
-            <p>{paramsCategory}</p>
+            <p><h1>{headerText}</h1></p>
+            <ToastContainer position="bottom-center" className="p-3">
+        <Toast  delay={3000} autohide>
+          <Toast.Body>Bookmark removed</Toast.Body>
+        </Toast>
+        </ToastContainer>
 
             {cardArray}
+            <Card className='Last'>
+                <Card.Body>
+                    <Card.Title>
+                        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    </Card.Title>
+                </Card.Body>
+            </Card>
 
         </div>
     )
 }
 
 export default Feeds;
+
+
+
+
+
+
+// {!post.bookmarked ?
+//     <BsBookmarks className='Icon'
+//         onClick={() => bookmarkHandler(post._id)} />
+//     :
+//     <BsFillBookmarksFill className='Icon'
+//         style={{ color: '#1a73e8' }}
+//         onClick={() => unBookmarkHandler(post._id)} />}
