@@ -18,19 +18,19 @@ const Login = () => {
         e.preventDefault();
         console.log(emailId);
         console.log(password);
-        axios.post('http://localhost:8080/login',{emailId, password})
-            .then(response=>{
+        axios.post('http://localhost:8080/login', { emailId, password })
+            .then(response => {
                 console.log(response);
                 localStorage.setItem('token', response.data.token);
                 axios.defaults.headers.common['Authorization'] = response.data.token;
                 navigate('/');
             })
-            .catch(err=>{
+            .catch(err => {
                 console.log(err.response.data.message);
-                if(err.response.status === 500){
+                if (err.response.status === 500) {
                     navigate('/500');
                 }
-                
+
                 setError(err.response.data.message);
 
             })
@@ -74,15 +74,20 @@ const Login = () => {
                                 setError(null)
                             }} />
                     </Form.Group>
+                    <div className='LoginReset'>
+                        <Link to='/reset' className='LoginResetPos'>
+                            <a>Forgot password ?</a>
+                        </Link>
 
-                    {error && <Alert variant='danger' style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <BiErrorCircle style={{ fontSize: '1em' }} />
-                        {error}
-                    </Alert>}
+                        {error && <Alert variant='danger' style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <BiErrorCircle style={{ fontSize: '1em' }} />
+                            {error}
+                        </Alert>}
 
 
 
-                    <Button variant="primary" type="submit"> Submit </Button>
+                        <Button variant="primary" type="submit" className='LoginButton'> Submit </Button>
+                    </div>
                 </Form>
             </Container>
         </div>

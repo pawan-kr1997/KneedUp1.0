@@ -15,7 +15,7 @@ const Feeds = () => {
     let headerText = " ";
     let navigate = useNavigate();
     const [posts, setPosts] = useState([]);
-    const [bookmarkData, setBookmarkData] = useState([]);
+    const [bookmarkData, setBookmarkData] = useState([{id:'1',date:'sasas'}]);
 
     switch (params.category) {
         case 'newsOnAir_National':
@@ -151,15 +151,6 @@ const Feeds = () => {
     }
 
     const unBookmarkHandler = (postId) => {
-        //console.log("bookmark removed");
-        
-
-
-
-
-
-
-
         axios.get("http://localhost:8080/postUnmark/" + postId)
             .then(result => {
                 console.log(result.data.user.bookmark);
@@ -171,8 +162,6 @@ const Feeds = () => {
     }
 
     let reversePosts = [...posts].reverse();
-    //console.log(reversePosts);
-
     let currentDate = '';
     let currentDateStatus = false;
 
@@ -217,6 +206,7 @@ const Feeds = () => {
             onClick={() => bookmarkHandler(post._id)} />;
 
         for (let i = 0; i < bookmarkData.length; i++) {
+
             if (bookmarkData[i].id.toString() === post._id.toString()) {
                 bookmarkStatus = <BsFillBookmarksFill className='Icon'
                     style={{ color: '#1a73e8' }}

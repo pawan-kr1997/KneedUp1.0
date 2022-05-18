@@ -24,8 +24,8 @@ const Signup = () => {
         axios.post('http://localhost:8080/signup',{emailId, password, confirmPassword})
             .then(response=>{
                 console.log(response);
-                localStorage.setItem('token', response.data.token);
-                navigate('/');
+                //localStorage.setItem('token', response.data.token);
+                navigate('/login');
             })
             .catch(err=>{
                 console.log(err.response.data.message);

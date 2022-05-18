@@ -7,16 +7,18 @@ import Modal from '../Components/UI/Modal/Modal';
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import axios from 'axios';
+import { useParams } from "react-router-dom";
+
 
 
 const Home = () => {
-
+    
     const [showModal, setShowModal] = useState(false);
     let navigate = useNavigate();
 
     const [categoryDetail, setCategoryDetail] = useState({});
 
-
+    
 
     useEffect(() => {
         axios.get('http://localhost:8080/feeds/category')
@@ -62,7 +64,7 @@ const Home = () => {
                     <Outlet />
                 </div>
 
-            </div>
+            </div> 
 
         </div>
     )

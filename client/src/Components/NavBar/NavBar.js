@@ -11,6 +11,18 @@ import './NavBar.css';
 const NavbarMain = () => {
     let navigate = useNavigate();
 
+    const bookmarkHandler= () =>{
+        if(localStorage.getItem('token')){
+            navigate('/bookmark');
+        }
+        else{
+            navigate('/login');
+        }
+    }
+
+
+
+
     return (
         <div>
             <Navbar fixed="top" collapseOnSelect
@@ -23,7 +35,9 @@ const NavbarMain = () => {
 
                         <Nav className="me-auto">
                             <Nav.Link href="#features">About Us</Nav.Link>
-                            <Nav.Link href="#pricing">Bookmarks</Nav.Link>
+                        
+                            <Nav.Link onClick={bookmarkHandler}>Bookmarks</Nav.Link>
+                            
                         </Nav>
 
 

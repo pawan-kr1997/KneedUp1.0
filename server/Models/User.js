@@ -15,6 +15,12 @@ const userSchema= new Schema({
     },
     bookmark:{
         type:Array
+    },
+    resetToken:{
+        type: String        
+    },
+    resetTokenExpiration:{
+        type: Date        
     }
 
 });

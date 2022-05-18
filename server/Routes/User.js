@@ -12,6 +12,9 @@ router.post('/feeds/category',isAuth, userController.postCategory);
 router.get('/postBookmark/:postId', isAuth, userController.getBookmarks);
 router.get('/postUnmark/:postId', isAuth, userController.getUnmarks);
 router.get('/bookmark/init', isAuth, userController.initBookmark);
+router.post('/password/resetLink', userController.postPasswordReset);
+router.post('/password/resetPassword', userController.postConfirmPasswordReset);
+router.get('/bookmark',isAuth, userController.getUserBookmarks);
 
 
 module.exports= router;
