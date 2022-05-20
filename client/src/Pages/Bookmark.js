@@ -19,7 +19,7 @@ const Bookmark = () => {
     let navigate = useNavigate();
 
     const [bookmark, setBookmark] = useState([]);
-
+    const [categoryDetail, setCategoryDetail] = useState({});
 
 
     useEffect(() => {
@@ -29,6 +29,22 @@ const Bookmark = () => {
                 if (JSON.stringify(bookmark) !== JSON.stringify(response.data.bookmark)) {
 
                     setBookmark(response.data.bookmark);
+                }
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    })
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/feeds/category')
+            .then(response => {
+
+                if (JSON.stringify(categoryDetail) !== JSON.stringify(response.data.category)) {
+
+                    setCategoryDetail(response.data.category);
+                
                 }
 
             })
@@ -105,7 +121,7 @@ const Bookmark = () => {
     return (
         <div>
             <NavBar />
-            <OffCanvas showHandler={showModalHandler} />
+            <OffCanvas showHandler={showModalHandler} category={categoryDetail}/>
 
             <Container>
                 <Row>

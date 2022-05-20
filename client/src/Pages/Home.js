@@ -13,6 +13,8 @@ import { useParams } from "react-router-dom";
 
 const Home = () => {
     
+    let loggedIn = localStorage.getItem('token') ? true : false;
+
     const [showModal, setShowModal] = useState(false);
     let navigate = useNavigate();
 
@@ -27,6 +29,7 @@ const Home = () => {
                 if (JSON.stringify(categoryDetail) !== JSON.stringify(response.data.category)) {
 
                     setCategoryDetail(response.data.category);
+                
                 }
 
             })
@@ -34,6 +37,34 @@ const Home = () => {
                 console.log(err);
             })
     })
+
+    useEffect(()=>{
+        if(!loggedIn){
+            navigate('/newsOnAir_National')
+        }
+        else{
+            if(categoryDetail.news){
+                navigate('/newsOnAir_National');
+            }
+            else if(categoryDetail.president){
+                navigate('/poi_Speeches');
+            }
+            else if(categoryDetail.niti){
+                navigate('/nitiAayog_nitiBlogs');
+            }
+            else if(categoryDetail.pib){
+                navigate('/pib_pressReleases');
+            }
+            else if(categoryDetail.prs){
+                navigate('/prs_Blogs');
+            }
+            else{
+                navigate('/idsa_commentsAndBriefs');
+            }
+
+        }
+        
+    }, [loggedIn])
 
 
     const showModalHandler = () => {
@@ -48,7 +79,7 @@ const Home = () => {
     return (
         <div style={{ height: '100vh', overflow: 'hidden' }}>
             <NavBar />
-            <OffCanvas showHandler={showModalHandler} />
+            <OffCanvas showHandler={showModalHandler} category={categoryDetail}/>
             <Modal show={showModal}
                 removeHandler={removeModalHandler}
                 category={categoryDetail} />

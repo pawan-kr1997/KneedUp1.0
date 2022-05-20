@@ -12,7 +12,20 @@ const Login = () => {
 
     const [emailId, setEmailId] = useState('');
     const [password, setPassword] = useState('');
+    const [token, setToken] = useState(null);
+    const [timerId, setTimerId] = useState(null);
     const [error, setError] = useState(null);
+
+
+    const removeTokenHandler = () => {
+        console.log("Hello from removeTokenHandler " + localStorage.getItem('token'));
+        localStorage.removeItem('token');
+        axios.defaults.headers.common['Authorization'] = null;
+        navigate('/');
+    }
+
+
+
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -23,6 +36,17 @@ const Login = () => {
                 console.log(response);
                 localStorage.setItem('token', response.data.token);
                 axios.defaults.headers.common['Authorization'] = response.data.token;
+
+                if (JSON.stringify(localStorage.getItem('oldToken')) !== JSON.stringify(localStorage.getItem('token'))) {
+
+                    localStorage.setItem('oldToken', localStorage.getItem('token'));
+                    clearTimeout(localStorage.getItem('timerId'));
+                    const myTimeout = setTimeout(removeTokenHandler, 3600000); 
+                    localStorage.setItem('timerId', myTimeout);
+                }
+
+
+
                 navigate('/');
             })
             .catch(err => {
