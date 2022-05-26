@@ -10,6 +10,7 @@ import './NavBar.css';
 
 const NavbarMain = () => {
     let navigate = useNavigate();
+    
 
     const bookmarkHandler= () =>{
         if(localStorage.getItem('token')){
@@ -20,21 +21,27 @@ const NavbarMain = () => {
         }
     }
 
-
-
+    const aboutHandler=()=>{
+        navigate('/about');
+    }
 
     return (
         <div>
             <Navbar fixed="top" collapseOnSelect
                 expand="lg" bg="dark" variant="dark" className='ShowNav'>
                 <Container>
-                    <Navbar.Brand href="#home">KneedUp.</Navbar.Brand>{'  '}
+                    <Navbar.Brand className='LogoFont'>
+                    <div >Kneed</div>
+                    <div className='UpFont'>Up</div>
+                    <div style={{color:"#B60000"}}>.</div>
+                    </Navbar.Brand>{'  '}
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
 
 
                         <Nav className="me-auto">
-                            <Nav.Link href="#features">About Us</Nav.Link>
+                            
+                            <Nav.Link onClick={aboutHandler}>About Us</Nav.Link>
                         
                             <Nav.Link onClick={bookmarkHandler}>Bookmarks</Nav.Link>
                             

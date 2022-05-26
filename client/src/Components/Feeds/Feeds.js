@@ -1,26 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Card, Button, Toast, ToastContainer } from 'react-bootstrap';
+import { Card, Button, Spinner } from 'react-bootstrap';
 import { BsBookmarks } from 'react-icons/bs';
 import { BsFillBookmarksFill } from 'react-icons/bs';
 import { MdShare } from 'react-icons/md';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import DateComp from '../Date/Date';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Feeds.css';
 
 
 const Feeds = () => {
     let params = useParams();
     let paramsCategory = '';
-    let headerText = " ";
+    var headerText = " ";
     let navigate = useNavigate();
     const [posts, setPosts] = useState([]);
-    const [bookmarkData, setBookmarkData] = useState([{id:'1',date:'sasas'}]);
+    const [loading, setLoading] = useState(true);
+    const [bookmarkData, setBookmarkData] = useState([{ id: '1', date: 'sasas' }]);
 
     switch (params.category) {
         case 'newsOnAir_National':
             paramsCategory = 'national';
-            headerText = 'News On Air / National news';
+            headerText = 'News On Air / National news'; 
             break;
         case 'newsOnAir_International':
             paramsCategory = 'international';
@@ -93,19 +96,20 @@ const Feeds = () => {
     }
 
 
-
-
-
-
-
-
     useEffect(() => {
+        
+            //setLoading(true);
+        
+        
         axios.get(url)
             .then(response => {
 
                 if (JSON.stringify(posts) !== JSON.stringify(response.data.posts)) {
-
+                    setLoading(true);
                     setPosts(response.data.posts);
+                }
+                else{
+                    setLoading(false);
                 }
 
             })
@@ -114,31 +118,34 @@ const Feeds = () => {
             })
     })
 
+   
+
     useEffect(() => {
-        if(localStorage.getItem('token')){
-        axios.get('http://localhost:8080/bookmark/init')
-            .then(response => {
+        if (localStorage.getItem('token')) {
+            axios.get('http://localhost:8080/bookmark/init')
+                .then(response => {
 
-                 if (JSON.stringify(bookmarkData) !== JSON.stringify(response.data.data)) {
+                    if (JSON.stringify(bookmarkData) !== JSON.stringify(response.data.data)) {
 
-                     setBookmarkData(response.data.data);
-                 }
-                //console.log(response.data.data);
+                        setBookmarkData(response.data.data);
+                    }
+                    //console.log(response.data.data);
 
-            })
-            .catch(err => {
-                console.log(err);
-            })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     })
 
 
     const bookmarkHandler = (postId) => {
         const token = localStorage.getItem('token');
+        toast("Post added to bookmark");
         if (!token) {
             navigate('/login');
         }
-        
+
         axios.get("http://localhost:8080/postBookmark/" + postId)
             .then(result => {
                 console.log(result.data.user.bookmark);
@@ -151,6 +158,7 @@ const Feeds = () => {
     }
 
     const unBookmarkHandler = (postId) => {
+        toast("Post removed from bookmark");
         axios.get("http://localhost:8080/postUnmark/" + postId)
             .then(result => {
                 console.log(result.data.user.bookmark);
@@ -232,9 +240,12 @@ const Feeds = () => {
                             {post.title}
                         </a></Card.Title>
                         <div className='IconContainer'>
-                            {bookmarkStatus}                            
+                            {bookmarkStatus}
 
-                            <MdShare className='Icon' onClick={() => {navigator.clipboard.writeText(contentURL)}} />
+                            <MdShare className='Icon' onClick={() => {
+                                navigator.clipboard.writeText(contentURL)
+                                toast("Post URL copied");
+                            }} />
                         </div>
                     </Card.Body>
                 </Card>
@@ -244,26 +255,39 @@ const Feeds = () => {
     })
 
 
+    const finalArr=<div>
+    <p><h1>{headerText}</h1></p>
+    {cardArray}
+    </div> 
+
+    let spinner= <Spinner animation="border" variant="primary" />
+
+    
 
 
     return (
         <div className='FeedsContainer'>
-
-            <p><h1>{headerText}</h1></p>
-            <ToastContainer position="bottom-center" className="p-3">
-        <Toast  delay={3000} autohide>
-          <Toast.Body>Bookmark removed</Toast.Body>
-        </Toast>
-        </ToastContainer>
-
-            {cardArray}
-            <Card className='Last'>
+        
+        <p><h1>{headerText}</h1></p>
+            {loading?<Spinner animation="border" variant="primary" />:cardArray}
+                  <Card className='Last'>
                 <Card.Body>
                     <Card.Title>
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     </Card.Title>
                 </Card.Body>
             </Card>
+            <ToastContainer
+                position="bottom-center"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+            />
 
         </div>
     )

@@ -8,6 +8,8 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { MdShare } from 'react-icons/md';
 import ReactTooltip from 'react-tooltip';
 import { MdDateRange } from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import './Style.css';
 
@@ -44,7 +46,7 @@ const Bookmark = () => {
                 if (JSON.stringify(categoryDetail) !== JSON.stringify(response.data.category)) {
 
                     setCategoryDetail(response.data.category);
-                
+
                 }
 
             })
@@ -64,6 +66,8 @@ const Bookmark = () => {
     }
 
     const unBookmarkHandler = (postId) => {
+        toast("Post removed from bookmark");
+
         axios.get("http://localhost:8080/postUnmark/" + postId)
             .then(result => {
                 console.log(result.data.user.bookmark);
@@ -75,12 +79,12 @@ const Bookmark = () => {
     }
 
 
-    let orderedBookmark= [...bookmark].reverse();
+    let orderedBookmark = [...bookmark].reverse();
 
     const bookmarkArray = orderedBookmark.map(post => {
 
-        let postUrl="https://"+post.url;
-        
+        let postUrl = "https://" + post.url;
+
         let myDate = new Date(post.date);
         let postDate = myDate.getDate();
         let postMonth = myDate.getMonth();
@@ -88,7 +92,7 @@ const Bookmark = () => {
         let date = new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate());
         let shortMonth = date.toLocaleString('en-us', { month: 'short' });
 
-        let finalDate= postDate+' '+ shortMonth+' '+postYear;
+        let finalDate = postDate + ' ' + shortMonth + ' ' + postYear;
 
 
         return (
@@ -106,8 +110,11 @@ const Bookmark = () => {
                         {post.title}
                     </a></Card.Title>
                     <div className='BookmarkIconContainer'>
-                        <RiDeleteBin6Line className='BookmarkIcon' onClick={() => unBookmarkHandler(post.id)}/>
-                        <MdShare className='BookmarkIcon' onClick={() => {navigator.clipboard.writeText(postUrl)}} />
+                        <RiDeleteBin6Line className='BookmarkIcon' onClick={() => unBookmarkHandler(post.id)} />
+                        <MdShare className='BookmarkIcon' onClick={() => {
+                            navigator.clipboard.writeText(postUrl)
+                            toast("Post URL copied")
+                        }} />
                     </div>
 
                 </Card.Body>
@@ -120,8 +127,8 @@ const Bookmark = () => {
 
     return (
         <div>
-            <NavBar />
-            <OffCanvas showHandler={showModalHandler} category={categoryDetail}/>
+            <NavBar/>
+            <OffCanvas showFollowSite={false} showHandler={showModalHandler} category={categoryDetail} />
 
             <Container>
                 <Row>
@@ -131,6 +138,17 @@ const Bookmark = () => {
                     </Col>
                 </Row>
             </Container>
+            <ToastContainer
+                position="bottom-center"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+            />
         </div>
     )
 }

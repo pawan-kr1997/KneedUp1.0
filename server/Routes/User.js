@@ -17,4 +17,5 @@ router.post('/password/resetPassword', userController.postConfirmPasswordReset);
 router.get('/bookmark',isAuth, userController.getUserBookmarks);
 
 
+
 module.exports= router;

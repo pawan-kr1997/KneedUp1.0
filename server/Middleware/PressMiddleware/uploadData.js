@@ -64,10 +64,10 @@ module.exports = (req, res, next) => {
                 console.log("[" + i + "]  " + toBeAddedArticles[i].title);
             }
 
-            if (toBeAddedArticles.length > 0) {
-                const sleep = (time) => {
-                    return new Promise((resolve) => setTimeout(resolve, time))
-                }
+             if (toBeAddedArticles.length > 0) {
+                 const sleep = (time) => {
+                     return new Promise((resolve) => setTimeout(resolve, time))
+                 }
 
                 const doSomething = async () => {
                     for (let i = 0; i < toBeAddedArticles.length; i++) {
@@ -92,7 +92,7 @@ module.exports = (req, res, next) => {
                     }
                 }
 
-                doSomething();
+            doSomething();
             }
 
             else {

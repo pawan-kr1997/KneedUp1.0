@@ -5,10 +5,11 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
+require('dotenv').config();
 
 const transport = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: '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'
+        api_key: process.env.APIKEY
     }
 }))
 
@@ -317,7 +318,7 @@ exports.postPasswordReset = (req, res, next) => {
             })
             .then(result => {
                 console.log(result);
-                return transport.sendMail({
+                 return transport.sendMail({
                     to: req.body.emailId,
                     from: '"KneedUp" <hello@kneedup.com>',
 
@@ -387,18 +388,18 @@ exports.postConfirmPasswordReset = (req, res, next) => {
 }
 
 
-exports.getUserBookmarks= (req, res, next)=>{
-    User.findOne({_id: req.userId})
-        .then(user=>{
+exports.getUserBookmarks = (req, res, next) => {
+    User.findOne({ _id: req.userId })
+        .then(user => {
             if (!user) {
                 const error = new Error('User do not exist');
                 error.statusCode = 422;
                 throw error;
             }
 
-            res.status(200).json({message:'Bookmarks sent', bookmark: user.bookmark})
+            res.status(200).json({ message: 'Bookmarks sent', bookmark: user.bookmark })
         })
-        .catch(err=>{
+        .catch(err => {
             if (!err.statusCode) {
                 err.statusCode = 500;
             }

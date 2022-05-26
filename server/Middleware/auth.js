@@ -8,7 +8,7 @@ module.exports= (req, res, next)=>{
 
     let decodedToken;
     try{
-        decodedToken= jwt.verify(token, 'marvelnewssecret');
+        decodedToken= jwt.verify(token, process.env.SECRET);
     }
     catch(err){
         res.status(200).json({

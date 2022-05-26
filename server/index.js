@@ -16,6 +16,10 @@ const prsblog= require('./Scheduling/PRSblog');
 const prsarticle= require('./Scheduling/PRSarticle');
 const poispeech= require('./Scheduling/PoiSpeeches');
 const poipress= require('./Scheduling/PoiPress');
+const notificationEmail= require('./Scheduling/NotificationEmail');
+const deleteNews= require('./Scheduling/DeleteNews');
+
+require('dotenv').config();
 
 const app=express();
 
@@ -34,6 +38,11 @@ app.use(express.json());
 //setInterval(poispeech, 6000);
 // setInterval(poipress, 6000);
 
+//setInterval(notificationEmail, 6000);
+//setInterval(deleteNews, 6000);
+
+
+
 app.use(userRoutes);
 app.use(postRoutes);
 
@@ -45,7 +54,7 @@ app.use((error, req, res, next)=>{
 })
 
 
-mongoose.connect('mongodb+srv://Pawan:LTsVDUziRvX9bbiq@cluster0.lfx5w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+mongoose.connect(process.env.DATABASE)
         .then(result=>{
             app.listen(8080, ()=> console.log('Server connected'));
         })

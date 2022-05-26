@@ -45,7 +45,11 @@ const Signup = () => {
             <Navbar fixed="top" collapseOnSelect
                 expand="lg" bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">KneedUp.</Navbar.Brand>{'  '}
+                    <Navbar.Brand className='LogoFont'>
+                    <div >Kneed</div>
+                    <div className='UpFont'>Up</div>
+                    <div style={{color:"#B60000"}}>.</div>
+                    </Navbar.Brand>{'  '}
                     <Link to='/login'>
                         <Button variant="outline-primary">Login</Button>
                     </Link>

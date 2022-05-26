@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import NavBar from '../Components/NavBar/NavBar';
 import OffCanvas from '../Components/OffCanvas/OffCanvas';
 import Feeds from '../Components/Feeds/Feeds';
@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 
 
 const Home = () => {
-    
+
     let loggedIn = localStorage.getItem('token') ? true : false;
 
     const [showModal, setShowModal] = useState(false);
@@ -20,7 +20,7 @@ const Home = () => {
 
     const [categoryDetail, setCategoryDetail] = useState({});
 
-    
+
 
     useEffect(() => {
         axios.get('http://localhost:8080/feeds/category')
@@ -29,7 +29,7 @@ const Home = () => {
                 if (JSON.stringify(categoryDetail) !== JSON.stringify(response.data.category)) {
 
                     setCategoryDetail(response.data.category);
-                
+
                 }
 
             })
@@ -38,33 +38,33 @@ const Home = () => {
             })
     })
 
-    useEffect(()=>{
-        if(!loggedIn){
+    useEffect(() => {
+        if (!loggedIn) {
             navigate('/newsOnAir_National')
         }
-        else{
-            if(categoryDetail.news){
+        else {
+            if (categoryDetail.news) {
                 navigate('/newsOnAir_National');
             }
-            else if(categoryDetail.president){
+            else if (categoryDetail.president) {
                 navigate('/poi_Speeches');
             }
-            else if(categoryDetail.niti){
+            else if (categoryDetail.niti) {
                 navigate('/nitiAayog_nitiBlogs');
             }
-            else if(categoryDetail.pib){
+            else if (categoryDetail.pib) {
                 navigate('/pib_pressReleases');
             }
-            else if(categoryDetail.prs){
+            else if (categoryDetail.prs) {
                 navigate('/prs_Blogs');
             }
-            else{
+            else if (categoryDetail.idsa) {
                 navigate('/idsa_commentsAndBriefs');
             }
 
         }
-        
-    }, [loggedIn])
+
+    }, [categoryDetail])
 
 
     const showModalHandler = () => {
@@ -76,10 +76,14 @@ const Home = () => {
         setShowModal(false);
     }
 
+    
+
+
+
     return (
         <div style={{ height: '100vh', overflow: 'hidden' }}>
             <NavBar />
-            <OffCanvas showHandler={showModalHandler} category={categoryDetail}/>
+            <OffCanvas showFollowSite={true} showHandler={showModalHandler} category={categoryDetail} />
             <Modal show={showModal}
                 removeHandler={removeModalHandler}
                 category={categoryDetail} />
@@ -95,7 +99,7 @@ const Home = () => {
                     <Outlet />
                 </div>
 
-            </div> 
+            </div>
 
         </div>
     )

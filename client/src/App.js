@@ -6,6 +6,7 @@ import Reset from './Pages/Reset';
 import PostReset from './Pages/PostReset';
 import Feeds from './Components/Feeds/Feeds';
 import Bookmark from './Pages/Bookmark';
+import About from './Pages/About';
 import PageNotFound from './Pages/404';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,6 +24,7 @@ const App = () => {
       <Route path='/bookmark' element={<Bookmark />} />
       <Route path='/reset/:resetToken' element={<Reset />} />
       <Route path='/reset' element={<PostReset />} />
+      <Route path='/about' element={<About />} />
       <Route path='*' element={<PageNotFound />} />
     </Routes>
   );
