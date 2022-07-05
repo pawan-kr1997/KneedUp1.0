@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
+const { validationResult } = require('express-validator');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 require('dotenv').config();
 
@@ -16,6 +17,15 @@ const transport = nodemailer.createTransport(sendgridTransport({
 
 exports.signupUser = (req, res, next) => {
     const { emailId, password, confirmPassword } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error(errors.array()[0].msg);
+        error.statusCode = 422;
+        throw error;
+    }
+
+
     if (password !== confirmPassword) {
         const error = new Error('Passwords do not match');
         error.statusCode = 404;
@@ -64,6 +74,13 @@ exports.signupUser = (req, res, next) => {
 exports.loginUser = (req, res, next) => {
     const { emailId, password } = req.body;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new Error(errors.array()[0].msg);
+        error.statusCode = 422;
+        throw error;
+    }
+
     User.findOne({ emailId: emailId })
         .then(user => {
 
@@ -83,7 +100,7 @@ exports.loginUser = (req, res, next) => {
             const token = jwt.sign({
                 emailId: user.emailId,
                 userId: user._id.toString()
-            }, 'marvelnewssecret', { expiresIn: '1h' });
+            }, 'marvelnewssecret', { expiresIn: '2h' });
 
             res.status(200).json({ message: 'User verified', user: user, token: token });
 
@@ -296,6 +313,15 @@ exports.initBookmark = (req, res, next) => {
 
 
 exports.postPasswordReset = (req, res, next) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+        const error = new Error('Email id is not valid');
+        error.statusCode = 422;
+        throw error;
+    }
+
     crypto.randomBytes(32, (err, buffer) => {
         if (err) {
             console.log(err);
@@ -304,8 +330,10 @@ exports.postPasswordReset = (req, res, next) => {
             throw error;
         }
         const token = buffer.toString('hex');
+        console.log("email: " + req.body.emailId);
         User.findOne({ emailId: req.body.emailId })
             .then(user => {
+                console.log("-------" + user);
                 if (!user) {
                     const error = new Error('No user with that email id exists');
                     error.statusCode = 422;
@@ -318,7 +346,7 @@ exports.postPasswordReset = (req, res, next) => {
             })
             .then(result => {
                 console.log(result);
-                 return transport.sendMail({
+                return transport.sendMail({
                     to: req.body.emailId,
                     from: '"KneedUp" <hello@kneedup.com>',
 
@@ -345,6 +373,16 @@ exports.postPasswordReset = (req, res, next) => {
 
 exports.postConfirmPasswordReset = (req, res, next) => {
     const token = req.body.token;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //console.log("ERRORS IN ME: "+errors.array()[0].msg);
+        const error = new Error(errors.array()[0].msg);
+        error.statusCode = 422;
+        throw error;
+    }
+
+
+
     if (req.body.password !== req.body.confirmPassword) {
         const error = new Error('Passwords do not match');
         error.statusCode = 404;

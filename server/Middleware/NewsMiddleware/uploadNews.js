@@ -59,45 +59,71 @@ module.exports = (req, res, next) => {
         })
         .then(result => {
 
+            let mongoInsertArray = [];
+
             console.log("to be added array");
             for (let i = 0; i < toBeAddedArticles.length; i++) {
                 console.log("[" + i + "]  " + toBeAddedArticles[i].title);
             }
 
-            if (toBeAddedArticles.length > 0) {
-                const sleep = (time) => {
-                    return new Promise((resolve) => setTimeout(resolve, time))
-                }
-
-                const doSomething = async () => {
-                    for (let i = 0; i < toBeAddedArticles.length; i++) {
-                        await sleep(1000)
-                        const post = new Post({
-                            title: toBeAddedArticles[i].title,
-                            url: toBeAddedArticles[i].url,
-                            category: req.category,
-                            bookmarked:false,
-                            source: mongoose.Types.ObjectId('627b99ca127e484a9c8cf96d')
-                        })
-                        post.save()
-                            .then(result => {
-                                console.log("Post has been saved: ");
-                                next();
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
-
-
-                    }
-                }
-
-                doSomething();
+            for (let i = 0; i < toBeAddedArticles.length; i++) {
+                mongoInsertArray.push({
+                    title: toBeAddedArticles[i].title,
+                    url: toBeAddedArticles[i].url,
+                    category: req.category,
+                    bookmarked: false,
+                    source: mongoose.Types.ObjectId('627b99ca127e484a9c8cf96d')
+                })
             }
 
+            if (toBeAddedArticles.length > 0) {
+                Post.insertMany(mongoInsertArray)
+                    .then(output => {
+                        console.log("Post has been saved: ");
+                        next();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
             else {
                 next();
             }
+
+            // if (toBeAddedArticles.length > 0) {
+            //     const sleep = (time) => {
+            //         return new Promise((resolve) => setTimeout(resolve, time))
+            //     }
+
+            //     const doSomething = async () => {
+            //         for (let i = 0; i < toBeAddedArticles.length; i++) {
+            //             await sleep(1000)
+            //             const post = new Post({
+            //                 title: toBeAddedArticles[i].title,
+            //                 url: toBeAddedArticles[i].url,
+            //                 category: req.category,
+            //                 bookmarked:false,
+            //                 source: mongoose.Types.ObjectId('627b99ca127e484a9c8cf96d')
+            //             })
+            //             post.save()
+            //                 .then(result => {
+            //                     console.log("Post has been saved: ");
+            //                     next();
+            //                 })
+            //                 .catch(err => {
+            //                     console.log(err);
+            //                 })
+
+
+            //         }
+            //     }
+
+            //     doSomething();
+            // }
+
+            // else {
+            //     next();
+            // }
         })
         .catch(err => {
             console.log(err);
