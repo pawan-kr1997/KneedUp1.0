@@ -9,6 +9,9 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    req.sourceName="pressInformationBureau";
+    req.sourceId='62794c2b06a9d74e0872f4f6';
+
     switch (category) {
         case 'pressReleases':
             url = "https://www.pib.gov.in/indexd.aspx";

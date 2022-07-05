@@ -9,6 +9,9 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    req.sourceName="nitiAayog";
+    req.sourceId='6278ec7ff7f7b4422788e4e8';
+
     switch (category) {
         case 'nitiBlogs':
             url = "https://www.niti.gov.in/niti-blogs";

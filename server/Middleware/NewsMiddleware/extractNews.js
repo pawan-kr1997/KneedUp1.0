@@ -9,6 +9,9 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    req.sourceName="newsOnAir";
+    req.sourceId='627b99ca127e484a9c8cf96d';
+
     switch (category) {
         case 'national':
             url = "https://newsonair.gov.in/National-News.aspx";

@@ -9,6 +9,10 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    
+    req.sourceName="presidentOfIndia" ;
+    req.sourceId='627baa0b66a5f4c3ea42a18c';
+
     switch (category) {
         case 'speeches':
             url = "https://presidentofindia.nic.in/speeches.htm";

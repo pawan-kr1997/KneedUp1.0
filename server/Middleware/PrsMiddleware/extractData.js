@@ -9,6 +9,9 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    req.sourceName="prsIndia";
+    req.sourceId='627bcd8b92057cdddf06f1ff';
+
     switch (category) {
         case 'blogs':
             url = "https://prsindia.org/theprsblog";

@@ -9,6 +9,9 @@ module.exports = (req, res, next) => {
     const category = req.params.category;
     let url = "";
 
+    req.sourceName="idsa";
+    req.sourceId='6278c2a8b9bbf30d4fcb2f50';
+
     switch (category) {
         case 'commentsAndBriefs':
             url = "https://www.idsa.in/new";

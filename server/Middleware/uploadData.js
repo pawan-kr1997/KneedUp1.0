@@ -1,8 +1,7 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const Post = require('../../Models/Post');
 const mongoose = require('mongoose');
-const Source = require('../../Models/Source');
+
+const Post = require('../Models/Post');
+const Source = require('../Models/Source');
 
 
 module.exports = (req, res, next) => {
@@ -11,10 +10,10 @@ module.exports = (req, res, next) => {
     let oldArticles = [];
     let toBeAddedArticles = [];
 
-    Source.findOne({ name: "idsa" })
+    Source.findOne({ name: req.sourceName })
         .then(sourceData => {
-            currentArticles = [...sourceData.currentState];
-            oldArticles = [...sourceData.oldState];
+            currentArticles = [...sourceData.data[req.category].currentState];
+            oldArticles = [...sourceData.data[req.category].oldState];
 
 
             if (oldArticles.length === 0) {
@@ -23,13 +22,13 @@ module.exports = (req, res, next) => {
                 toBeAddedArticles = [...currentArticles];
                 toBeAddedArticles = toBeAddedArticles.reverse();
 
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
                 return sourceData.save();
             }
             else if (currentArticles[0].title === oldArticles[0].title) {
                 console.log("yes 2");
                 oldArticles = [...currentArticles];
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
                 return sourceData.save();
             }
             else {
@@ -51,7 +50,7 @@ module.exports = (req, res, next) => {
 
                 toBeAddedArticles = toBeAddedArticles.reverse();
                 oldArticles = [...currentArticles];
-                sourceData.oldState = [...oldArticles];
+                sourceData.data[req.category].oldState = [...oldArticles];
 
                 return sourceData.save();
             }
@@ -60,7 +59,7 @@ module.exports = (req, res, next) => {
         .then(result => {
 
             let mongoInsertArray=[];
-            
+
             console.log("to be added array");
             for (let i = 0; i < toBeAddedArticles.length; i++) {
                 console.log("[" + i + "]  " + toBeAddedArticles[i].title);
@@ -72,7 +71,7 @@ module.exports = (req, res, next) => {
                     url: toBeAddedArticles[i].url,
                     category: req.category,
                     bookmarked: false,
-                    source: mongoose.Types.ObjectId('6278c2a8b9bbf30d4fcb2f50')
+                    source: mongoose.Types.ObjectId(req.sourceId)
                 })
             }
 
@@ -90,40 +89,7 @@ module.exports = (req, res, next) => {
                 next();
             }
 
-            // if (toBeAddedArticles.length > 0) {
-            //     const sleep = (time) => {
-            //         return new Promise((resolve) => setTimeout(resolve, time))
-            //     }
-
-            //     const doSomething = async () => {
-            //         for (let i = 0; i < toBeAddedArticles.length; i++) {
-            //             await sleep(1000)
-            //             const post = new Post({
-            //                 title: toBeAddedArticles[i].title,
-            //                 url: toBeAddedArticles[i].url,
-            //                 category: req.category,
-            //                 bookmarked: false,
-            //                 source: mongoose.Types.ObjectId('6278c2a8b9bbf30d4fcb2f50')
-            //             })
-            //             post.save()
-            //                 .then(result => {
-            //                     console.log("Post has been saved: ");
-            //                     next();
-            //                 })
-            //                 .catch(err => {
-            //                     console.log(err);
-            //                 })
-
-
-            //         }
-            //     }
-
-            //     doSomething();
-            // }
-
-            // else {
-            //     next();
-            // }
+            
         })
         .catch(err => {
             console.log(err);
