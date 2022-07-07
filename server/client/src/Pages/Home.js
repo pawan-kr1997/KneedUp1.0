@@ -20,6 +20,7 @@ const Home = () => {
 
     const [categoryDetail, setCategoryDetail] = useState({});
 
+    //Logic to get category of user logged in
     useEffect(() => {
         axios.get('https://kneedup.herokuapp.com/feeds/category')
             .then(response => {
@@ -36,7 +37,7 @@ const Home = () => {
             })
     })
 
-
+    //Logic where to route initially
     useEffect(() => {
         if (!loggedIn) {
             navigate('/newsOnAir_National')

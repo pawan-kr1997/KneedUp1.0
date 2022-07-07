@@ -1,11 +1,8 @@
 import React from 'react';
 import { Container, Nav, Navbar, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
 import axios from 'axios';
-
-
 
 import './NavBar.css';
 

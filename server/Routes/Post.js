@@ -13,6 +13,7 @@ const uploadDataMiddleware= require('../Middleware/uploadData');
 
 const router= express.Router();
 
+//routes used to initialize the source models
 //router.post('/newsOnAir', postController.initSource);
 //router.post('/idsa', postController.initSource);
 //router.post('/niti', postController.initSource);

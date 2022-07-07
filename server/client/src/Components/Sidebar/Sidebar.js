@@ -1,22 +1,16 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Accordion, ListGroup, Button } from 'react-bootstrap';
-import { FiStar } from 'react-icons/fi';
-import axios from 'axios';
-import Modal from '../UI/Modal/Modal';
-import NewSideBar from '../NewSideBar/NewSideBar';
+import { Button } from 'react-bootstrap';
+import CategorySideBar from '../CategorySideBar/CategorySideBar';
+
 import './Sidebar.css';
-import NewNavBar from '../NewSideBar/NewSideBar';
 
 const Sidebar = (props) => {
 
-    let LoggedIn= localStorage.getItem('token')? true: false;
+    let LoggedIn = localStorage.getItem('token') ? true : false;
 
     return (
         <div className='SidebarParent'>
-
-
-            {!LoggedIn?<div>
+            {!LoggedIn ? <div>
                 <Link to='/login' className='SidebarLink'>
                     <Button variant="secondary" size="lg" className='SidebarButton'>
                         Login
@@ -27,9 +21,9 @@ const Sidebar = (props) => {
                         Sign Up
                     </Button>
                 </Link>
-            </div>: null}
+            </div> : null}
 
-            <NewSideBar categoryNew={props.category} />
+            <CategorySideBar categoryNew={props.category} />
         </div>
     )
 }

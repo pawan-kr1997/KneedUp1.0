@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import './NewSideBar.css';
+import { Link, NavLink } from 'react-router-dom';
+import './CategorySideBar.css';
 
-const NewSideBar = (props) => {
+const CategorySideBar = (props) => {
     return (
         <div className='NewSidebarParent'>
             {props.categoryNew.news ?
@@ -96,4 +96,4 @@ const NewSideBar = (props) => {
     )
 }
 
-export default NewSideBar;
+export default CategorySideBar;

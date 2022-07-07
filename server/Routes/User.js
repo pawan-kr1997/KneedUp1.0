@@ -22,6 +22,7 @@ router.post('/signup',
         .trim()
         .isLength({ min: 8 }),
     userController.signupUser);
+
 router.post('/login',
     body('emailId', 'Email id is not valid')
         .trim()
@@ -33,11 +34,13 @@ router.post('/login',
         .isLength({ min: 8 })
         .isAlphanumeric()
     , userController.loginUser);
+
 router.get('/feeds/category', isAuth, userController.getCategory);
 router.post('/feeds/category', isAuth, userController.postCategory);
 router.get('/postBookmark/:postId', isAuth, userController.getBookmarks);
 router.get('/postUnmark/:postId', isAuth, userController.getUnmarks);
 router.get('/bookmark/init', isAuth, userController.initBookmark);
+
 router.post('/password/resetLink',
     body('emailId', 'Email id is not valid')
         .trim()
@@ -62,6 +65,7 @@ router.post('/password/resetPassword', [
         .isLength({ min: 8 })
 
 ], userController.postConfirmPasswordReset);
+
 router.get('/bookmark', isAuth, userController.getUserBookmarks);
 
 

@@ -4,6 +4,8 @@ const Post = require('../../Models/Post');
 const mongoose = require('mongoose');
 const Source = require('../../Models/Source');
 
+//Logic to extract data from original site and passing to the source model
+
 module.exports = (req, res, next) => {
 
     const category = req.params.category;

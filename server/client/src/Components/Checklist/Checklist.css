@@ -1,45 +1,38 @@
-.Lists{
-    height:250px;
+.Lists {
+    height: 250px;
     width: 80%;
     border: 0px solid black;
     border-radius: 10px;
     margin: 30px auto;
     align-items: center;
-   
     overflow: auto;
-   
-    
 }
 
-.List{
+.List {
     padding: 5px 50%;
 }
 
-.ListButton{
+.ListButton {
     width: 80%;
 }
 
-.Text{
+.Text {
     text-align: center;
 }
 
-.Parent{
+.Parent {
     display: flex;
     flex-direction: column;
     gap: 3px;
     align-items: center;
 }
 
-
-
-.ListParent{
+.ListParent {
     display: flex;
     flex-direction: row;
     gap: 30px;
     width: 90%;
-    margin:auto;
+    margin: auto;
     justify-content: space-between;
     margin-bottom: 13px;
-  
-
 }

@@ -22,6 +22,8 @@ const Post = require('../Models/Post');
 
 //---------------------------------------------------------------------------------------
 
+
+//Logic to extract posts of a particular category
 exports.getPosts = (req, res, next) => {
 
 

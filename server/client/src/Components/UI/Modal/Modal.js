@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Backdrop from '../Backdrop/Backdrop';
 import Checklist from '../../Checklist/Checklist';
 import './Modal.css';

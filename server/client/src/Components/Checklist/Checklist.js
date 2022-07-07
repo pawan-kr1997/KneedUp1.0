@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
+
 import './Checklist.css';
 
 const Checklist = (props) => {
@@ -15,7 +16,7 @@ const Checklist = (props) => {
     const [prs, setPrs] = useState('');
 
 
-
+//Logic to initalize the checklist
     useEffect(() => {
         axios.get('https://kneedup.herokuapp.com/feeds/category')
             .then(response => {
@@ -33,6 +34,7 @@ const Checklist = (props) => {
                     setPrs(response.data.category.prs);
                 }
 
+                //If not submitted then dont change the checklist
                 if(!props.show){
                     setNews(response.data.category.news);
                     setPresident(response.data.category.president);
@@ -50,9 +52,9 @@ const Checklist = (props) => {
     })
 
 
+//Logic to update the logged in user checklist    
     const onSubmitHandler = () => { 
-        //console.log("Name: " + name + " Place: " + place + " Animal: " + animal + " Thing: " + thing);
-    
+   
         let category={
             News: news, 
             President: president, 
@@ -61,8 +63,6 @@ const Checklist = (props) => {
             Pib: pib,
             Prs: prs
         }
-
-        
 
         axios.post('https://kneedup.herokuapp.com/feeds/category', category)
             .then(response=>{

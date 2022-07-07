@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Card, Button, Spinner } from 'react-bootstrap';
+import { Card, Spinner } from 'react-bootstrap';
+import { useParams, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import _ from "lodash";
 import { BsBookmarks } from 'react-icons/bs';
 import { BsFillBookmarksFill } from 'react-icons/bs';
 import { MdShare } from 'react-icons/md';
-import { useParams, useNavigate } from "react-router-dom";
-import axios from 'axios';
+
 import DateComp from '../Date/Date';
-import { ToastContainer, toast } from 'react-toastify';
-import { Controller, Scene } from 'react-scrollmagic';
-import 'react-toastify/dist/ReactToastify.css';
-import _ from "lodash";
+
 import './Feeds.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Feeds = () => {
@@ -21,6 +22,9 @@ const Feeds = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [bookmarkData, setBookmarkData] = useState([{ id: '1', date: 'sasas' }]);
+    let reversePosts = [...posts].reverse();
+    let currentDate = '';
+    let currentDateStatus = false;
 
     switch (params.category) {
         case 'newsOnAir_National':
@@ -92,43 +96,31 @@ const Feeds = () => {
         url = "https://kneedup.herokuapp.com/prsIndia/" + paramsCategory;
     }
     else {
-        console.log("Hello ji");
         //navigate('/404pagenotfound');
-    
-
     }
 
+    //Logic to always start window from top when URL is changed
     useEffect(() => {
         window.scrollTo(0, 0)
-      }, [params.category])
+    }, [params.category])
 
-
+    //Logic to fetch post data from database
     useEffect(() => {
-    
-        
-        setLoading(true);
 
+        setLoading(true);
 
         axios.get(url)
             .then(response => {
                 setPosts(response.data.posts);
                 setLoading(false);
-                // if (JSON.stringify(posts) !== JSON.stringify(response.data.posts)) {
-                //     setLoading(true);
-                //     setPosts(response.data.posts);
-                // }
-                // else {
-                //     setLoading(false);
-                // }
-
             })
             .catch(err => {
                 console.log(err);
             })
-    },[params.category])
+    }, [params.category])
 
 
-
+    //Logic to determine which posts are bookmarked for the logged in user
     useEffect(() => {
         if (localStorage.getItem('token')) {
             axios.get('https://kneedup.herokuapp.com/bookmark/init')
@@ -138,7 +130,6 @@ const Feeds = () => {
 
                         setBookmarkData(response.data.data);
                     }
-                    //console.log(response.data.data);
 
                 })
                 .catch(err => {
@@ -147,14 +138,15 @@ const Feeds = () => {
         }
     })
 
+    //Logic for sticky title animation
     var checkHeader = _.throttle(() => {
-    
+
         let scrollPosition = Math.ceil(window.scrollY);
         console.log(scrollPosition);
         if (scrollPosition > 10) {
             document.querySelector('p').classList.add('HeaderTextHover');
         }
-        else{
+        else {
             document.querySelector('p').classList.remove('HeaderTextHover');
         }
     }, 300)
@@ -165,6 +157,7 @@ const Feeds = () => {
     }, [])
 
 
+    //Logic to bookmark a post
     const bookmarkHandler = (postId) => {
         const token = localStorage.getItem('token');
         toast("Post added to bookmark");
@@ -174,7 +167,6 @@ const Feeds = () => {
 
         axios.get("https://kneedup.herokuapp.com/postBookmark/" + postId)
             .then(result => {
-                console.log(result.data.user.bookmark);
                 setBookmarkData(result.data.user.bookmark);
 
             })
@@ -183,11 +175,11 @@ const Feeds = () => {
             })
     }
 
+    //Logic to remove a post from bookmark
     const unBookmarkHandler = (postId) => {
         toast("Post removed from bookmark");
         axios.get("https://kneedup.herokuapp.com/postUnmark/" + postId)
             .then(result => {
-                console.log(result.data.user.bookmark);
                 setBookmarkData(result.data.user.bookmark);
             })
             .catch(err => {
@@ -195,26 +187,23 @@ const Feeds = () => {
             })
     }
 
-    let reversePosts = [...posts].reverse();
-    let currentDate = '';
-    let currentDateStatus = false;
 
+    //Logic to set url of the post, manipulate date and show post's bookmarked status
     let cardArray = reversePosts.map(post => {
         let contentURL = '';
-
-        if(params.category==="newsOnAir_National" || 
-        params.category==="newsOnAir_International"|| 
-        params.category==="newsOnAir_Business" || 
-        params.category==="newsOnAir_Sports"||
-        params.category==="idsa_commentsAndBriefs"||
-        params.category==="prs_Blogs"||
-        params.category==="prs_Articles" ){
+        if (params.category === "newsOnAir_National" ||
+            params.category === "newsOnAir_International" ||
+            params.category === "newsOnAir_Business" ||
+            params.category === "newsOnAir_Sports" ||
+            params.category === "idsa_commentsAndBriefs" ||
+            params.category === "prs_Blogs" ||
+            params.category === "prs_Articles") {
             contentURL = "https://" + post.url;
         }
-        else{
-            contentURL= post.url;
+        else {
+            contentURL = post.url;
         }
-         
+
 
         let myDate = new Date(post.createdAt);
         let postDate = myDate.getDate();
@@ -294,16 +283,12 @@ const Feeds = () => {
         )
     })
 
-
     const finalArr = <div>
         <p><h1>{headerText}</h1></p>
         {cardArray}
     </div>
 
     let spinner = <Spinner animation="border" variant="primary" />
-
-
-
 
     return (
         <div className='FeedsContainer'>
@@ -315,7 +300,7 @@ const Feeds = () => {
                 </p>
             </div>
 
-            {loading ?<div style={{margin:'auto'}}> <Spinner animation="border" variant="primary"/></div> : cardArray}
+            {loading ? <div style={{ margin: 'auto' }}> <Spinner animation="border" variant="primary" /></div> : cardArray}
             <Card className='Last'>
                 <Card.Body>
                     <Card.Title>
@@ -346,10 +331,3 @@ export default Feeds;
 
 
 
-// {!post.bookmarked ?
-//     <BsBookmarks className='Icon'
-//         onClick={() => bookmarkHandler(post._id)} />
-//     :
-//     <BsFillBookmarksFill className='Icon'
-//         style={{ color: '#1a73e8' }}
-//         onClick={() => unBookmarkHandler(post._id)} />}

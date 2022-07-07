@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Post = require('../Models/Post');
 const Source = require('../Models/Source');
 
+//Logic to upload newly published scrapped posts to the database
 
 module.exports = (req, res, next) => {
 
@@ -17,7 +18,6 @@ module.exports = (req, res, next) => {
 
 
             if (oldArticles.length === 0) {
-                console.log("yes 1");
                 oldArticles = [...currentArticles];
                 toBeAddedArticles = [...currentArticles];
                 toBeAddedArticles = toBeAddedArticles.reverse();
@@ -26,14 +26,12 @@ module.exports = (req, res, next) => {
                 return sourceData.save();
             }
             else if (currentArticles[0].title === oldArticles[0].title) {
-                console.log("yes 2");
                 oldArticles = [...currentArticles];
                 sourceData.data[req.category].oldState = [...oldArticles];
                 return sourceData.save();
             }
             else {
-                console.log("yes 3");
-                let index = currentArticles.length;       //Changed this part
+                let index = currentArticles.length;      
                 for (let i = 0; i < currentArticles.length; i++) {
                     if (oldArticles[0].title === currentArticles[i].title) {
                         index = i;
@@ -59,11 +57,6 @@ module.exports = (req, res, next) => {
         .then(result => {
 
             let mongoInsertArray=[];
-
-            console.log("to be added array");
-            for (let i = 0; i < toBeAddedArticles.length; i++) {
-                console.log("[" + i + "]  " + toBeAddedArticles[i].title);
-            }
 
             for (let i = 0; i < toBeAddedArticles.length; i++) {
                 mongoInsertArray.push({

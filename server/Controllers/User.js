@@ -15,6 +15,8 @@ const transport = nodemailer.createTransport(sendgridTransport({
 }))
 
 
+//Logic for signigup a user
+
 exports.signupUser = (req, res, next) => {
     const { emailId, password, confirmPassword } = req.body;
 
@@ -60,7 +62,6 @@ exports.signupUser = (req, res, next) => {
 
         })
         .then(result => {
-            console.log('user has been added');
             res.status(200).json({ message: 'user has been added' });
         })
         .catch(err => {
@@ -70,6 +71,9 @@ exports.signupUser = (req, res, next) => {
             next(err);
         })
 }
+
+
+//Logic for loging in a user
 
 exports.loginUser = (req, res, next) => {
     const { emailId, password } = req.body;
@@ -90,7 +94,6 @@ exports.loginUser = (req, res, next) => {
                 throw error;
             }
 
-            console.log("--------user password" + user.password);
             if (user.password !== password) {
                 const error = new Error('Password does not match');
                 error.statusCode = 422;
@@ -114,6 +117,8 @@ exports.loginUser = (req, res, next) => {
 }
 
 
+//Logic to get category detail of a particular user
+
 exports.getCategory = (req, res, next) => {
 
     User.findOne({ _id: req.userId })
@@ -135,6 +140,8 @@ exports.getCategory = (req, res, next) => {
 }
 
 
+//Logic to update the category field of logged in user
+
 exports.postCategory = (req, res, next) => {
 
     const updatedNews = req.body.News;
@@ -144,7 +151,6 @@ exports.postCategory = (req, res, next) => {
     const updatedPib = req.body.Pib;
     const updatedPrs = req.body.Prs;
 
-    //console.log("niti    "+ updatedNiti+"  president   "+updatedPresident);
 
     User.findOne({ _id: req.userId })
         .then(user => {
@@ -176,6 +182,8 @@ exports.postCategory = (req, res, next) => {
         })
 }
 
+//Logic to add post details in the bookmark field of logged in user
+
 exports.getBookmarks = (req, res, next) => {
 
     let userDetail = null;
@@ -195,7 +203,6 @@ exports.getBookmarks = (req, res, next) => {
         }
         )
         .then(post => {
-            console.log(post.source.name);
 
             let postCategory = '';
 
@@ -255,7 +262,6 @@ exports.getBookmarks = (req, res, next) => {
             return userDetail.save();
         })
         .then(result => {
-            //console.log(result);
             res.status(200).json({ message: 'Result after adding bookmark', user: result });
         })
 
@@ -267,6 +273,7 @@ exports.getBookmarks = (req, res, next) => {
         })
 }
 
+//Logic to delete posts details from bookmark field of the logged in user
 
 exports.getUnmarks = (req, res, next) => {
     const postId = req.params.postId;
@@ -276,7 +283,6 @@ exports.getUnmarks = (req, res, next) => {
             let oldBookmark = [...user.bookmark];
 
             let updatedBookmark = oldBookmark.filter(el => el.id.toString() !== postId.toString());
-            console.log("Updated Bookmark:  " + updatedBookmark);
             user.bookmark = [...updatedBookmark];
             return user.save();
         })
@@ -290,6 +296,8 @@ exports.getUnmarks = (req, res, next) => {
             next(err);
         })
 }
+
+//Logic to get the bookmark field data of the logged in user
 
 exports.initBookmark = (req, res, next) => {
     User.findOne({ _id: req.userId })
@@ -311,12 +319,12 @@ exports.initBookmark = (req, res, next) => {
         })
 }
 
+//Logic to generate reset token and emailing the password reset link
 
 exports.postPasswordReset = (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors);
         const error = new Error('Email id is not valid');
         error.statusCode = 422;
         throw error;
@@ -324,16 +332,13 @@ exports.postPasswordReset = (req, res, next) => {
 
     crypto.randomBytes(32, (err, buffer) => {
         if (err) {
-            console.log(err);
             const error = new Error('Password reset error');
             error.statusCode = 422;
             throw error;
         }
         const token = buffer.toString('hex');
-        console.log("email: " + req.body.emailId);
         User.findOne({ emailId: req.body.emailId })
             .then(user => {
-                console.log("-------" + user);
                 if (!user) {
                     const error = new Error('No user with that email id exists');
                     error.statusCode = 422;
@@ -345,7 +350,6 @@ exports.postPasswordReset = (req, res, next) => {
                 return user.save();
             })
             .then(result => {
-                console.log(result);
                 return transport.sendMail({
                     to: req.body.emailId,
                     from: '"KneedUp" <hello@kneedup.com>',
@@ -369,13 +373,12 @@ exports.postPasswordReset = (req, res, next) => {
     });
 }
 
-
+//Logic to reset the user password
 
 exports.postConfirmPasswordReset = (req, res, next) => {
     const token = req.body.token;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        //console.log("ERRORS IN ME: "+errors.array()[0].msg);
         const error = new Error(errors.array()[0].msg);
         error.statusCode = 422;
         throw error;
@@ -425,6 +428,7 @@ exports.postConfirmPasswordReset = (req, res, next) => {
         })
 }
 
+//Logic to get the bookmark field data of the logged in user
 
 exports.getUserBookmarks = (req, res, next) => {
     User.findOne({ _id: req.userId })

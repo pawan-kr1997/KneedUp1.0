@@ -21,7 +21,7 @@ const Bookmark = () => {
     const [bookmark, setBookmark] = useState([]);
     const [categoryDetail, setCategoryDetail] = useState({});
 
-
+    //Logic to get bookmarked posts of logged in user
     useEffect(() => {
         axios.get('https://kneedup.herokuapp.com/bookmark')
             .then(response => {
@@ -37,6 +37,7 @@ const Bookmark = () => {
             })
     })
 
+    //Logic to set category for offcanvas 
     useEffect(() => {
         axios.get('https://kneedup.herokuapp.com/feeds/category')
             .then(response => {
