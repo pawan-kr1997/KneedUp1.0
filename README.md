@@ -1,3 +1,5 @@
+**[Note: Backend code is in `server` folder and frontend code is in `client` folder. `client` folder has been kept inside `server` folder. In order to deploy the application on Heroku The folder strucutre has been maintained in this way.]**
+
 # KneedUp
 KneedUp is a web application for aspirants preparing from government sites. It scraps publicly available scattered data from multiple government sites and makes them available in a single place. It provides new post notification alerts and bookmark features to users to make handling of data more convenient.
 
@@ -27,4 +29,7 @@ KneedUp is a web application for aspirants preparing from government sites. It s
 
 ## Contributing
 
-Everyone is welcome for contribution! Fork the repo, make some changes, submit a pull-request!
+Everyone is welcome for contribution! Fork the repo, make some changes, submit a pull-request!. 
+**[Note: In the `.env` file enter you own database credential and sendgrid apikey]** 
+
+
